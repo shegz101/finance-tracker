@@ -18,9 +18,9 @@ const Hero: React.FC = () => {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <a
                 className="block w-full rounded bg-primary px-12 py-3 text-sm font-medium text-white shadow hover:bg-blue focus:outline-none focus:ring active:bg-blue-600 sm:w-auto"
-                href="#"
+                href="/sign-up"
                 >
-                Get Started
+                    Get Started
                 </a>
             </div>
             </div>
