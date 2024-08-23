@@ -8,7 +8,7 @@ function DashboardLayout({children}: any) {
             <SideNav/>
         </div>
 
-        <div className='md:ml-56 bg-green-200'>
+        <div className='md:ml-72 bg-green-200'>
             {children}
         </div>
     </div>
