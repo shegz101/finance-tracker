@@ -10,10 +10,11 @@ import { useRouter } from 'next/navigation';
 
 function DashboardLayout({children}: any) {
   const { user } = useUser();
+
   const router = useRouter();
 
   useEffect(() => {
-    user && isBudgetCreated();
+    user&&isBudgetCreated();
   }, [user])
 
   const isBudgetCreated = async () => {
@@ -30,7 +31,6 @@ function DashboardLayout({children}: any) {
     if (data?.length == 0) {
       router.replace('/dashboard/budgets')
     }
-    console.log(data);
   }
   return (
     <div>

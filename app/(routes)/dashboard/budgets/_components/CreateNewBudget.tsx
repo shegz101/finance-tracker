@@ -1,5 +1,5 @@
 "use client"
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogClose,
@@ -18,25 +18,31 @@ import { db } from '@/utils/dbConfig';
 import { Budgets } from '@/utils/schema';
 import { useUser } from '@clerk/nextjs';
 
-
-function CreateNewBudget() {
-  const [currentemoji, setCurrentEmoji] =  useState<ReactNode>('😂');
-  const [openemojipicker, setOpenEmojiPicker] =useState<boolean>(false)
+const CreateNewBudget = ({ refreshData }:any) => {
+  const [currentemoji, setCurrentEmoji] =  useState<string>('😂');
+  const [openemojipicker, setOpenEmojiPicker] =useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [amount, setAmount] = useState('');
 
   const { user } = useUser();
 
   const onCreateBudget = async () => {
+    const emailAddress = user?.primaryEmailAddress?.emailAddress;
+    if (!emailAddress) {
+      console.error("User email is undefined");
+      return;
+    }
+
     // when user clicks the create budget button, add it to the database
     const data = await db.insert(Budgets).values({
       name: name,
       amount: amount,
-      createdBy: user?.primaryEmailAddress?.emailAddress,
+      createdBy: emailAddress,
       icon: currentemoji
     }).returning({inserted:Budgets.id})
     
     if (data) {
+      refreshData()
       toast("Budget successfully created!")
     }
     setAmount("");
@@ -49,8 +55,8 @@ function CreateNewBudget() {
         <DialogTrigger asChild>
             <div className="bg-slate-100 mt-5 p-10 font-bold items-center flex flex-col rounded-md 
             border-dashed border-2 hover:shadow-md cursor-pointer">
-                <h2 className="text-3xl">+</h2>
-                <h2>Create New Budget</h2>
+              <h2 className="text-3xl">+</h2>
+              <h2>Create New Budget</h2>
             </div>
         </DialogTrigger>
         <DialogContent>
@@ -59,7 +65,7 @@ function CreateNewBudget() {
               <DialogDescription>
                 <div className='mt-5'>
                   <Button variant={"outline"} className='text-lg' onClick={() => setOpenEmojiPicker(!openemojipicker)}>{currentemoji}</Button>
-                  <div className='mt-2 absolute'>
+                  <div className='mt-2 absolute z-10'>
                     <EmojiPicker
                     open={openemojipicker}
                     onEmojiClick={(e) => {
@@ -78,7 +84,7 @@ function CreateNewBudget() {
                 </div>
 
                 <div className='mt-2'>
-                  <h1 className='text-black font-bold my-1'>Budget Amount</h1>
+                  <p className='text-black font-bold my-1'>Budget Amount</p>
                   <Input placeholder='e.g. $200'
                   value={amount}
                   type='number'

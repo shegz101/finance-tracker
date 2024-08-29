@@ -1,5 +1,6 @@
 "use client"
 import Image from 'next/image';
+import Logo from '../../public/logo.svg'
 import { Button } from '@/components/ui/button';
 import { useUser, UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ const Header: React.FC = () => {
   return (
     <div className='p-5 flex justify-between items-center border-b-2 shadow-sm'>
       <Image
-      src={'./logo.svg'}
+      src={Logo}
       alt="Expense Tracker Logo"
       width={160}
       height={100}
