@@ -46,8 +46,8 @@ function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: Exp
 
         console.log(data);
       } catch (error: any) {
-          // Handle any errors that occur during the process
-          toast(error.message || "An error occurred while creating the expense");
+        // Handle any errors that occur during the process
+        toast(error.message || "An error occurred while creating the expense");
       }
     };
 

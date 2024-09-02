@@ -7,6 +7,22 @@ import { Budgets, Expenses } from '@/utils/schema';
 import BudgetItem from '../../budgets/_components/BudgetItem';
 import CreateExpense from '../_components/CreateExpense';
 import ExpenseListTable from '../_components/ExpenseListTable';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { toast } from 'sonner';
+import { Router } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface BudgetInfo {
   id: number;
@@ -32,6 +48,8 @@ function Expense({params}: any) {
     const [expensesList, setExpensesList] = useState<ExpenseList[]>([]);
     const [budgetAmount, setBudgetAmount] = useState<string>('')
     const [budgetSpent, setBudgetSpent] = useState<string>('')
+
+    const route = useRouter();
 
     const emailAddress = user?.primaryEmailAddress?.emailAddress || "";
 
@@ -62,15 +80,56 @@ function Expense({params}: any) {
     // get list of expenses in a particular budget
     const getExpensesItems = async () => {
         const data = await db.select().from(Expenses)
-        .where(eq(Expenses.budgetId, params.id))
-        .orderBy(desc(Expenses.id))
-        setExpensesList(data);
-        console.log(data);
+            .where(eq(Expenses.budgetId, params.id))
+            .orderBy(desc(Expenses.id))
+            setExpensesList(data);
+            console.log(data);
+        }
+
+        const deleteBudget = async () => {
+        // First, delete the expenses attached to the budget
+        const deleteExpenseInBudget = async () => {
+            const data = await db.delete(Expenses)
+                .where(eq(Expenses.budgetId, params.id))
+                .returning();
+        }
+
+        // Await the deletion of expenses before proceeding to delete the budget
+        await deleteExpenseInBudget();
+
+        // After expenses are deleted, delete the budget
+        const data = await db.delete(Budgets)
+            .where(eq(Budgets.id, params.id))
+            .returning();
+
+        // Notify the user and navigate to the budgets page
+        toast('Expense Deleted!');
+        route.replace('/dashboard/budgets');
     }
+
 
   return (
     <div className='p-10'> 
-        <h1 className='text-3xl font-bold'>My Expenses</h1>
+        <h1 className='text-3xl font-bold flex justify-between items-center'>My Expenses
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button className='flex gap-2' variant={"destructive"}>Delete <TrashIcon/></Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete this partuclar Budget and the expenses attached
+                        and remove your data from our servers.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => deleteBudget()}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-5'>
             {
