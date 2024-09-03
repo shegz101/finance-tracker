@@ -9,12 +9,10 @@ import { Loader } from "lucide-react";
 
 type ExpenseItemId = {
   budgetId: any; // This should match the type of each item in budgetItems
-  budgetAmount: string;
-  budgetSpent: string;
   refreshData: () => any
 };
 
-function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: ExpenseItemId) {
+function CreateExpense({ budgetId, refreshData }: ExpenseItemId) {
   const [name, setName] = useState<string>('');
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,13 +20,6 @@ function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: Exp
     const onCreateExpense = async () => {
       try {
         setLoading(true);
-        const remainingAmount = parseInt(budgetAmount) - parseInt(budgetSpent);
-        console.log(remainingAmount);
-
-        // Check if the expense amount is greater than the budget's available amount
-        if (parseFloat(amount) > remainingAmount) {
-            throw new Error("Expense amount exceeds the budget limit");
-        }
 
         // Add the expense to the database
         const data = await db.insert(Expenses).values({
