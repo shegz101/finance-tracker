@@ -5,6 +5,7 @@ import { db } from '@/utils/dbConfig';
 import { Budgets, Expenses } from "@/utils/schema";
 import { toast } from "sonner"
 import moment from "moment";
+import { Loader } from "lucide-react";
 
 type ExpenseItemId = {
   budgetId: any; // This should match the type of each item in budgetItems
@@ -16,9 +17,11 @@ type ExpenseItemId = {
 function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: ExpenseItemId) {
   const [name, setName] = useState<string>('');
   const [amount, setAmount] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
     const onCreateExpense = async () => {
       try {
+        setLoading(true);
         const remainingAmount = parseInt(budgetAmount) - parseInt(budgetSpent);
         console.log(remainingAmount);
 
@@ -37,8 +40,10 @@ function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: Exp
 
         if (data) {
           refreshData();
+          setLoading(false);
           toast("Expense successfully created!");
         }
+        setLoading(false);
 
         // Reset the input fields after successful submission
         setAmount("");
@@ -71,7 +76,11 @@ function CreateExpense({ budgetId, refreshData, budgetAmount, budgetSpent }: Exp
             />
         </div>
 
-        <Button disabled={!(name&&amount)} onClick={() => onCreateExpense()} className='bg-primary text-white mt-3 w-full'>Create Budget</Button>
+        <Button disabled={!(name&&amount)||loading} onClick={() => onCreateExpense()} className='bg-primary text-white mt-3 w-full'>
+          {
+            loading ? <Loader className="animate-spin"/> : "Create Expenses"
+          }
+        </Button>
     </div>
   )
 }

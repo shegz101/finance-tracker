@@ -21,7 +21,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { toast } from 'sonner';
-import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
 import EditBudget from '../_components/EditBudget';
 
@@ -147,7 +146,6 @@ function Expense({params}: any) {
         </div>
 
         <div className='mt-5'>
-            <h2 className='font-bold text-lg'>Latest Expenses</h2>
             <ExpenseListTable expensesList={expensesList} refreshData={() => getBudgetData()}/>
         </div>
     </div>

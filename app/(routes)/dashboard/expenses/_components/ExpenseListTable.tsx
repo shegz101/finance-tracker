@@ -5,16 +5,16 @@ import { eq } from "drizzle-orm";
 import { toast } from "sonner";
 
 interface ExpenseList { 
-    id: number;
-    name: string;
-    amount: string;
-    budgetId: number | null;
-    createdAt: string;
+  id: number;
+  name: string;
+  amount: string;
+  budgetId?: number | null;
+  createdAt: string;
 }
 
 type ExpenseTableProps = {
-    expensesList: ExpenseList[];
-    refreshData: () => any
+  expensesList: ExpenseList[];
+  refreshData: () => any
 }
 
 function ExpenseListTable({expensesList, refreshData}: ExpenseTableProps) {
@@ -30,7 +30,8 @@ function ExpenseListTable({expensesList, refreshData}: ExpenseTableProps) {
     }
   }
   return (
-    <div className='mt-3'>
+    <div className='mt-4'>
+      <h2 className='font-bold text-lg mt-2'>Recent Expenses</h2>
       <div className='grid grid-cols-4 p-3 bg-slate-200 font-bold'>
         <h2>Name</h2>
         <h2>Amount</h2>
@@ -41,12 +42,12 @@ function ExpenseListTable({expensesList, refreshData}: ExpenseTableProps) {
       {
         expensesList.map((expense, index) => (
           <div className='grid grid-cols-4 p-3 bg-slate-50 font-medium'>
-              <h2>{expense.name}</h2>
-              <h2>${expense.amount}</h2>
-              <h2>{expense.createdAt}</h2>
-              <h2>
-                  <Trash2Icon onClick={() => deleteExpense(expense)} className="text-red-600 cursor-pointer"/>
-              </h2>
+            <h2>{expense.name}</h2>
+            <h2>${expense?.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h2>
+            <h2>{expense.createdAt}</h2>
+            <h2>
+                <Trash2Icon onClick={() => deleteExpense(expense)} className="text-red-600 cursor-pointer"/>
+            </h2>
           </div> 
         ))
       }

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from '@/components/ui/button'
 import { EditIcon } from 'lucide-react'
 import EmojiPicker from "emoji-picker-react"
@@ -31,15 +31,15 @@ interface BudgetInfo {
 }
 
 interface EditBudgetProps {
-    budget: any
-    refreshData: () => any
+  budget: any
+  refreshData: () => any
 }
 
 function EditBudget({ budget, refreshData }: EditBudgetProps) {
   const [currentemoji, setCurrentEmoji] =  useState<string>(budget?.icon);
   const [openemojipicker, setOpenEmojiPicker] =useState<boolean>(false);
-  const [name, setName] = useState<string>(budget?.name);
-  const [amount, setAmount] = useState(budget?.amount);
+  const [name, setName] = useState<string>('');
+  const [amount, setAmount] = useState('');
 
   const { user } = useUser();
 
@@ -56,6 +56,14 @@ function EditBudget({ budget, refreshData }: EditBudgetProps) {
       toast("Budget successfully Edited!")
     }
   }
+
+  useEffect(() => {
+    if(budget) {
+      setCurrentEmoji(budget?.icon);
+      setName(budget?.name);
+      setAmount(budget?.amount);
+    }
+  }, [budget])
   return (
     <div>
       <Dialog>

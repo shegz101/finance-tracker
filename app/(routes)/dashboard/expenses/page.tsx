@@ -1,14 +1,10 @@
 "use client"
-import { useState, useEffect } from "react";
-import { UserButton, useUser } from '@clerk/nextjs'
-import { db } from '@/utils/dbConfig'
+import React, { useState } from 'react'
+import ExpenseListTable from './_components/ExpenseListTable'
+import { db } from '@/utils/dbConfig';
 import { desc, eq, getTableColumns, sql } from 'drizzle-orm'
-import CardItem from './_components/CardItem';
-import { Budgets, Expenses } from "@/utils/schema";
-import DashboardBarChart from "./_components/DashboardBarChart";
-import BudgetItem from "./budgets/_components/BudgetItem";
-import ExpenseListTable from "./expenses/_components/ExpenseListTable";
-import TypeWriter from "./_components/TypeWriter";
+import { Expenses, Budgets } from "@/utils/schema";
+import { useUser } from '@clerk/nextjs'
 
 type BudgetItem = {
   totalSpent: number;
@@ -28,7 +24,7 @@ type ExpenseItem = {
 };
 
 function page() {
-  const [budgetItems, setBudgetItems] = useState<BudgetItem[]>([]);
+    const [budgetItems, setBudgetItems] = useState<BudgetItem[]>([]);
   const [allExpenses, setAllExpenses] = useState<ExpenseItem[]>([])
 
   const { user } = useUser();
@@ -86,26 +82,12 @@ function page() {
   }
 
   return (
-    <div className='p-5'>
-      <TypeWriter text={`Hello, ${user?.fullName} 👋`} />
-      <p className='text-gray-500'>Here is an Overview of your Budgets and Expenses</p>
-      {/* Display the cards */}
-      <CardItem budgetItem={budgetItems}/>
+    <div className='mt-3 p-5'>
+      <h2 className='font-bold text-lg'>My Expenses</h2>
+      <p className='text-gray-500 mb-3'>Here is an Overview of your Expenses</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-6 gap-5">
-        <div className="md:col-span-2">
-          <DashboardBarChart budgetItem={budgetItems}/>
-
-          <ExpenseListTable expensesList={allExpenses} refreshData={() => getAllExpenses}/>
-        </div>
-        <div className="grid gap-3 h-[200px]">
-          <h2 className='font-bold text-lg'>Recent Budgets</h2>
-          {
-            recentBudgets.map((budgetItem,index) => (
-              <BudgetItem budget={budgetItem} key={index}/>
-            ))
-          }
-        </div>
+      <div className='border-2 shadow-md rounded-lg p-3'>
+        <ExpenseListTable expensesList={allExpenses} refreshData={() => getAllExpenses}/>
       </div>
     </div>
   )
