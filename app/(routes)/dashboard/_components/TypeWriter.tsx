@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 
 interface TypeWriterProps {
     text: string
+    styling?: string
 }
 
-function TypeWriter({ text }: TypeWriterProps) {
+function TypeWriter({ text, styling }: TypeWriterProps) {
     const [displayedText, setDisplayedText] = useState('');
     const [index, setIndex] = useState(0);
 
@@ -20,7 +21,7 @@ function TypeWriter({ text }: TypeWriterProps) {
         }
     }, [index, text]);
 
-    return <h2  className='font-bold text-3xl'>{displayedText}</h2>;
+    return <h2 className={styling}>{displayedText}</h2>;
 }
 
 export default TypeWriter;

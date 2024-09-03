@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation';
+import TypeWriter from "../(routes)/dashboard/_components/TypeWriter";
 
 const Hero: React.FC = () => {
     const { isSignedIn } = useUser();
@@ -18,8 +19,9 @@ const Hero: React.FC = () => {
     <section className="bg-gray-50 flex items-center flex-col">
         <div className="mx-auto max-w-screen-xl px-5 py-32 lg:flex">
             <div className="mx-auto max-w-xl text-center">
+
                 <h1 className="text-3xl font-extrabold sm:text-5xl">
-                    Manage Your Expenses
+                    <TypeWriter text="Manage Your Expenses" styling="text-3xl font-extrabold sm:text-5xl"/>
                     <strong className="font-extrabold text-primary sm:block"> Control your Spending </strong>
                 </h1>
 

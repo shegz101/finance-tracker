@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs';
 import { db } from '@/utils/dbConfig'
-import { desc, eq, getTableColumns, sql } from 'drizzle-orm'
+import { and, desc, eq, getTableColumns, sql } from 'drizzle-orm'
 import { Budgets, Expenses } from '@/utils/schema';
 import BudgetItem from '../../budgets/_components/BudgetItem';
 import CreateExpense from '../_components/CreateExpense';
@@ -46,12 +46,15 @@ function Expense({params}: any) {
     const { user } = useUser();
     const [budgetInfoStore, setBudgetInfoStore] = useState<BudgetInfo[]>([]);
     const [expensesList, setExpensesList] = useState<ExpenseList[]>([]);
-    const [budgetAmount, setBudgetAmount] = useState<string>('')
-    const [budgetSpent, setBudgetSpent] = useState<string>('')
 
     const route = useRouter();
 
-    const emailAddress = user?.primaryEmailAddress?.emailAddress || "";
+    const emailAddress = user?.primaryEmailAddress?.emailAddress;
+
+    if (!emailAddress) {
+        console.error("User email is undefined");
+        return;
+    }
 
     useEffect(() => {
         user&&getBudgetData()
@@ -63,16 +66,18 @@ function Expense({params}: any) {
             ...getTableColumns(Budgets),
             totalSpent: sql `sum(${Expenses.amount}::numeric)`.mapWith(Number),
             totalItem: sql `count(${Expenses.id})`.mapWith(Number),
-        }).from(Budgets)
+        })
+        .from(Budgets)
         .leftJoin(Expenses, eq(Budgets.id, Expenses.budgetId))
-        .where(eq(Budgets.createdBy, emailAddress))
-        .where(eq(Budgets.id, params.id))
+        .where(
+            and(
+                eq(Budgets.createdBy, emailAddress),
+                eq(Budgets.id, params.id)
+            )
+        )
         .groupBy(Budgets.id)
 
-        setBudgetInfoStore(data[0]);
-        console.log(budgetInfoStore)
-        setBudgetAmount(data[0]?.amount);
-        setBudgetSpent(data[0]?.totalSpent);
+        setBudgetInfoStore(data.length > 0 ? data : []);
         getExpensesItems();
     }
 
@@ -142,7 +147,7 @@ function Expense({params}: any) {
                     <div className='w-full h-[180px] rounded-lg bg-slate-200 animate-pulse'/>
                 )
             }
-            <CreateExpense budgetId={params.id} budgetAmount={budgetAmount} budgetSpent={budgetSpent} refreshData={() => getBudgetData()}/>
+            <CreateExpense budgetId={params.id} refreshData={() => getBudgetData()}/>
         </div>
 
         <div className='mt-5'>

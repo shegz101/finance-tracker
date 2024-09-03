@@ -87,7 +87,7 @@ function page() {
 
   return (
     <div className='p-5'>
-      <TypeWriter text={`Hello, ${user?.fullName} 👋`} />
+      <TypeWriter text={`Hello, ${user?.fullName} 👋`} styling="font-bold text-3xl"/>
       <p className='text-gray-500'>Here is an Overview of your Budgets and Expenses</p>
       {/* Display the cards */}
       <CardItem budgetItem={budgetItems}/>
