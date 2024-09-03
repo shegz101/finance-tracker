@@ -8,7 +8,7 @@ import BudgetItem from '../../budgets/_components/BudgetItem';
 import CreateExpense from '../_components/CreateExpense';
 import ExpenseListTable from '../_components/ExpenseListTable';
 import { Button } from '@/components/ui/button';
-import { TrashIcon } from 'lucide-react';
+import { EditIcon, TrashIcon } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +23,7 @@ import {
 import { toast } from 'sonner';
 import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
+import EditBudget from '../_components/EditBudget';
 
 interface BudgetInfo {
   id: number;
@@ -44,7 +45,7 @@ interface ExpenseList {
 
 function Expense({params}: any) {
     const { user } = useUser();
-    const [budgetInfoStore, setBudgetInfoStore] = useState<BudgetInfo[]>([])
+    const [budgetInfoStore, setBudgetInfoStore] = useState<BudgetInfo[]>([]);
     const [expensesList, setExpensesList] = useState<ExpenseList[]>([]);
     const [budgetAmount, setBudgetAmount] = useState<string>('')
     const [budgetSpent, setBudgetSpent] = useState<string>('')
@@ -54,7 +55,6 @@ function Expense({params}: any) {
     const emailAddress = user?.primaryEmailAddress?.emailAddress || "";
 
     useEffect(() => {
-        // console.log(params)
         user&&getBudgetData()
     }, [params])
 
@@ -71,9 +71,9 @@ function Expense({params}: any) {
         .groupBy(Budgets.id)
 
         setBudgetInfoStore(data[0]);
+        console.log(budgetInfoStore)
         setBudgetAmount(data[0]?.amount);
         setBudgetSpent(data[0]?.totalSpent);
-        console.log(data);  
         getExpensesItems();
     }
 
@@ -83,7 +83,6 @@ function Expense({params}: any) {
             .where(eq(Expenses.budgetId, params.id))
             .orderBy(desc(Expenses.id))
             setExpensesList(data);
-            console.log(data);
         }
 
         const deleteBudget = async () => {
@@ -111,24 +110,29 @@ function Expense({params}: any) {
   return (
     <div className='p-10'> 
         <h1 className='text-3xl font-bold flex justify-between items-center'>My Expenses
-            <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <Button className='flex gap-2' variant={"destructive"}>Delete <TrashIcon/></Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete this partuclar Budget and the expenses attached
-                        and remove your data from our servers.
-                    </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deleteBudget()}>Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            {/* Edit Budget Button */}
+            <div className='flex gap-2 items-center'>
+                <EditBudget budget={budgetInfoStore} refreshData={() => getBudgetData()}/>
+            
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button className='flex gap-2' variant={"destructive"}><TrashIcon/> Delete</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete this partuclar Budget and the expenses attached
+                            and remove your data from our servers.
+                        </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => deleteBudget()}>Continue</AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </div>
         </h1>
 
         <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-5'>
