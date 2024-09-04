@@ -30,11 +30,11 @@ const BudgetsList: React.FC = () => {
     return;
   }
 
-  useEffect(() => {
-    if (emailAddress) {
-      getBudgets();
-    }
-  }, [emailAddress]);
+  // useEffect(() => {
+  //   if (emailAddress) {
+  //     getBudgets();
+  //   }
+  // }, [emailAddress]);
 
   // Get the Budget List
   const getBudgets = async () => {
@@ -55,6 +55,8 @@ const BudgetsList: React.FC = () => {
       console.error("Error fetching budgets:", error);
     }
   };
+
+  getBudgets();
 
   return (
     <div>

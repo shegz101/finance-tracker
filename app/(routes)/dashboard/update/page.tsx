@@ -1,4 +1,3 @@
-import React from 'react'
 import TypeWriter from '../_components/TypeWriter'
 
 function UpdateComponent() {

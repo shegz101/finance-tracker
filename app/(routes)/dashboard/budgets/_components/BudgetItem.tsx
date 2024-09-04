@@ -1,7 +1,17 @@
 import Link from "next/link";
 
+interface BudgetListItem {
+  totalSpent: number;
+  totalItem: number;
+  id: number;
+  name: string;
+  amount: any;
+  icon: string | null;
+  createdBy: string;
+}
+
 type BudgetItemProps = {
-  budget: any; // This should match the type of each item in budgetItems
+  budget: BudgetListItem; // This should match the type of each item in budgetItems
 };
 
 const BudgetItem: React.FC<BudgetItemProps> = ({ budget }) => {
@@ -32,7 +42,7 @@ const BudgetItem: React.FC<BudgetItemProps> = ({ budget }) => {
         <div className="mt-5">
           <div className="flex items-center justify-between mb-3">
               <h2 className="text-xs text-slate-400">${(budget?.totalSpent)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") ? (budget?.totalSpent)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0} Spent</h2>
-              <h2 className="text-xs text-slate-400">${(budget?.amount)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") - (budget?.totalSpent)?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Remaining</h2>
+              <h2 className="text-xs text-slate-400">${(budget?.amount - budget?.totalSpent).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Remaining</h2>
           </div>
           <div className="w-full h-2 bg-slate-100 rounded-full">
               <div className="h-2 bg-primary rounded-full" style={{ width: `${getProgressBarValue()}%`}}/>

@@ -82,7 +82,6 @@ function page() {
     .orderBy(desc(Expenses.id))
 
     setAllExpenses(data);
-    console.log(data);
   }
 
   return (

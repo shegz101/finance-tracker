@@ -27,11 +27,11 @@ import EditBudget from '../_components/EditBudget';
 interface BudgetInfo {
   id: number;
   name: string;
-  amount: string;
-  icon: string | null;
+  amount: any;
+  icon: any;
   createdBy: string;
   totalItem: number;
-  totalSpent: number | null;
+  totalSpent: number;
 }
 
 interface ExpenseList { 
@@ -44,7 +44,7 @@ interface ExpenseList {
 
 function Expense({params}: any) {
     const { user } = useUser();
-    const [budgetInfoStore, setBudgetInfoStore] = useState<BudgetInfo[]>([]);
+    const [budgetInfoStore, setBudgetInfoStore] = useState<BudgetInfo>();
     const [expensesList, setExpensesList] = useState<ExpenseList[]>([]);
 
     const route = useRouter();
@@ -56,9 +56,9 @@ function Expense({params}: any) {
         return;
     }
 
-    useEffect(() => {
-        user&&getBudgetData()
-    }, [params])
+    // useEffect(() => {
+    //     user&&getBudgetData()
+    // }, [params])
 
     // Get the particular Budget Info to be able to add expenses under it
     const getBudgetData = async () => {
@@ -77,9 +77,13 @@ function Expense({params}: any) {
         )
         .groupBy(Budgets.id)
 
-        setBudgetInfoStore(data.length > 0 ? data : []);
+        setBudgetInfoStore(data[0]);
+        console.log("BudgetInfo", budgetInfoStore);
+
         getExpensesItems();
     }
+
+    getBudgetData();
 
     // get list of expenses in a particular budget
     const getExpensesItems = async () => {
@@ -109,7 +113,6 @@ function Expense({params}: any) {
         toast('Expense Deleted!');
         route.replace('/dashboard/budgets');
     }
-
 
   return (
     <div className='p-10'> 
