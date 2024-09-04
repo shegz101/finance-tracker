@@ -23,8 +23,6 @@ const BudgetsList: React.FC = () => {
 
   const emailAddress = user?.primaryEmailAddress?.emailAddress;
 
-  console.log("email address", emailAddress);
-
   if (!emailAddress) {
     console.error("User email is undefined");
     return;

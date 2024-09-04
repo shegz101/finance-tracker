@@ -78,7 +78,6 @@ function Expense({params}: any) {
         .groupBy(Budgets.id)
 
         setBudgetInfoStore(data[0]);
-        console.log("BudgetInfo", budgetInfoStore);
 
         getExpensesItems();
     }
