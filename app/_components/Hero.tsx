@@ -1,20 +1,19 @@
 "use client"
 import Image from 'next/image'
 import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation';
 import TypeWriter from "../(routes)/dashboard/_components/TypeWriter";
 
 const Hero: React.FC = () => {
     const { isSignedIn } = useUser();
-    const router = useRouter();
+    // const router = useRouter();
 
-    const isSign = () => {
-        if (isSignedIn) {
-            router.replace('/dashboard')
-        }
-    }
+    // const isSign = () => {
+    //     if (isSignedIn) {
+    //         router.replace('/dashboard')
+    //     }
+    // }
 
-    isSign();
+    // isSign();
   return (
     <section className="bg-gray-50 flex items-center flex-col">
         <div className="mx-auto max-w-screen-xl px-5 py-32 lg:flex">
