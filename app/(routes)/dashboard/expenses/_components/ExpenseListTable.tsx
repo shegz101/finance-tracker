@@ -3,6 +3,16 @@ import { db } from '@/utils/dbConfig';
 import { Expenses } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { toast } from "sonner";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 interface ExpenseList { 
   id: number;
@@ -31,26 +41,31 @@ function ExpenseListTable({expensesList, refreshData}: ExpenseTableProps) {
   }
   return (
     <div className='mt-4'>
+      {/* ShadCN Table UI */}
       <h2 className='font-bold text-lg mt-2'>Recent Expenses</h2>
-      <div className='grid grid-cols-4 p-3 bg-slate-200 font-bold'>
-        <h2>Name</h2>
-        <h2>Amount</h2>
-        <h2>Date</h2>
-        <h2>Action</h2>
-      </div>
-
-      {
-        expensesList.map((expense, index) => (
-          <div className='grid grid-cols-4 p-3 bg-slate-50 font-medium'>
-            <h2>{expense.name}</h2>
-            <h2>${expense?.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h2>
-            <h2>{expense.createdAt}</h2>
-            <h2>
+      <Table>
+        <TableCaption>A list of your recent expenses.</TableCaption>
+        <TableHeader className="bg-slate-200 font-bold">
+          <TableRow>
+            <TableHead className="w-[200px]">Name</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="bg-slate-50 font-medium">
+          {expensesList.map((expense, index) => (
+            <TableRow key={index}>
+              <TableCell className="font-medium">{expense.name}</TableCell>
+              <TableCell>${expense?.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</TableCell>
+              <TableCell>{expense.createdAt}</TableCell>
+              <TableCell className="text-right">
                 <Trash2Icon onClick={() => deleteExpense(expense)} className="text-red-600 cursor-pointer"/>
-            </h2>
-          </div> 
-        ))
-      }
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

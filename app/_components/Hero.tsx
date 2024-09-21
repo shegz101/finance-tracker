@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
             </div>
         </div>
         <Image
-        src={'/dashboard.jpg'}
+        src={'/dashboard.png'}
         alt="Dashboard Image"
         width={1000}
         height={700}

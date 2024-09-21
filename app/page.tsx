@@ -9,12 +9,13 @@ export default function Home() {
   const router = useRouter();
 
   const isSign = () => {
-      if (isSignedIn) {
-          router.replace('/dashboard/budgets')
-      }
+    if (isSignedIn) {
+        router.replace('/dashboard/budgets')
+    }
   }
 
   isSign();
+
   return (
     <div>
       <Header/>

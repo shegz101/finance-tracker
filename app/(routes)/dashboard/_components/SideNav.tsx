@@ -77,11 +77,11 @@ function SideNav() {
           </div>
         ))
       }
-      <div className='fixed bottom-10 flex p-5 gap-2 items-center'>
+      <div className='fixed bottom-10 flex p-5 gap-2 items-center w-[80%] text-wrap'>
         <UserButton />
-        <div className='text-gray-500'>
+        <div className='text-gray-500 text-wrap'>
           <p>{user?.fullName}</p>
-          <p>{user?.primaryEmailAddress?.emailAddress}</p>
+          <p className='text-wrap'>{user?.primaryEmailAddress?.emailAddress}</p>
         </div>
       </div>
     </div>

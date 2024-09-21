@@ -59,7 +59,7 @@ const BudgetsList: React.FC = () => {
   return (
     <div>
       {emailAddress ? (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
           <CreateNewBudget refreshData={() => getBudgets()}/>
           {budgetItems?.length > 0 ? budgetItems.map((budget, index) => (
             <BudgetItem key={index} budget={budget} />

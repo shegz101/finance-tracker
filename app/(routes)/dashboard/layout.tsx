@@ -34,7 +34,7 @@ function DashboardLayout({children}: any) {
   }
   return (
     <div>
-        <div className='fixed md:w-72 hidden md:block'>
+        <div className='fixed md:w-72 hidden md:block text-wrap'>
           <SideNav/>
         </div>
 
