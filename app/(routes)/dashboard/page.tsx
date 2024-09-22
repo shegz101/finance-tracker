@@ -85,19 +85,19 @@ function page() {
   }
 
   return (
-    <div className='p-5'>
+    <div className='p-3 md:p-5'>
       <TypeWriter text={`Hello, ${user?.fullName} 👋`} styling="font-bold text-3xl"/>
       <p className='text-gray-500'>Here is an Overview of your Budgets and Expenses</p>
       {/* Display the cards */}
       <CardItem budgetItem={budgetItems}/>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-6 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-6 gap-5">
         <div className="md:col-span-2">
           <DashboardBarChart budgetItem={budgetItems}/>
 
           <ExpenseListTable expensesList={allExpenses} refreshData={() => getAllExpenses}/>
         </div>
-        <div className="grid gap-3 h-[200px]">
+        <div className="grid gap-3 h-[200px] md:col-span-2 lg:col-span-1">
           <h2 className='font-bold text-lg'>Recent Budgets</h2>
           {
             recentBudgets.map((budgetItem,index) => (
