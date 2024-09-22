@@ -35,7 +35,7 @@ const DashboardHeader = () => {
       <div className="bg-white m-[-12px] md:m-[-20px] md:hidden mt-3 w-[85vw] absolute z-20">
         {
           trackHamburgerIcon && (
-            <div className="">
+            <div className="bg-white">
               <SideNav/>
             </div>
           )
