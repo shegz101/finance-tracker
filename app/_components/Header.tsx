@@ -8,7 +8,7 @@ import Link from 'next/link';
 const Header: React.FC = () => {
   const { isSignedIn } = useUser();
   return (
-    <div className='p-5 flex justify-between items-center border-b-2 shadow-sm'>
+    <div className='p-3 md:p-5 flex justify-between items-center border-b-2 shadow-sm'>
       <Image
       src={Logo}
       alt="Expense Tracker Logo"

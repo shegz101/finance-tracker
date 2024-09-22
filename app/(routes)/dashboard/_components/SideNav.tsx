@@ -2,7 +2,6 @@
 import { UserButton, useUser, useClerk } from '@clerk/nextjs'
 import { LayoutGrid, PiggyBank, ReceiptText, ShieldCheck, LogOut } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 function SideNav() {
@@ -58,7 +57,7 @@ function SideNav() {
   ];
 
   return (
-    <div className='h-screen p-5 border-2 shadow-sm'>
+    <div className='h-[90vh] md:h-screen p-3 md:p-5 border-2 shadow-sm sm:relative'>
       <Image
         src={'./logo.svg'}
         alt="Expense Tracker Logo"
@@ -77,7 +76,7 @@ function SideNav() {
           </div>
         ))
       }
-      <div className='fixed bottom-10 flex p-5 gap-2 items-center'>
+      <div className='fixed bottom-[8px] md:bottom-10 flex p-3 md:p-5 gap-2 items-center'>
         <UserButton />
         <div className='text-gray-500 text-wrap'>
           <p>{user?.fullName}</p>
